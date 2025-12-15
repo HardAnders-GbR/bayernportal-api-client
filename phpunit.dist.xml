@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="./Build/vendor/phpunit/phpunit/phpunit.xsd"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    colors="true"
+>
+    <php>
+        <env name="TEST_API_KEY" value=""/>
+        <env name="TEST_BASE_URL" value=""/>
+        <env name="TEST_ORGANISATION_ID" value=""/>
+        <env name="TEST_PST_ID" value=""/>
+
+        <!-- Value format: BASE_URL::API_KEY::ORGANISATION_ID -->
+        <!-- Add as many test credentials as you like by just counting up the last digit in the env name -->
+        <env name="TEST_GETALLPST_1"
+             value="https://restapi-v4-sh.infodienste.de/::xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx::xxxxxxxxx"
+        />
+    </php>
+</phpunit>

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Endpoints\Behoerden;
+
+use Hardanders\BayernPortalApiClient\Model\Behoerde;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenRequest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\Endpoints\BaseEndpointTest;
+
+class GetBehoerdenTest extends BaseEndpointTest
+{
+    #[DataProvider('dataProvider')]
+    public function testGetBehoerden(GetBehoerdenRequest $request): void
+    {
+        $response = $this->apiClient->getBehoerden($request);
+
+        foreach ($response as $item) {
+            $this->assertInstanceOf(Behoerde::class, $item);
+        }
+    }
+
+    public static function dataProvider(): iterable
+    {
+        yield [new GetBehoerdenRequest(full: false)];
+        yield [new GetBehoerdenRequest(full: true)];
+    }
+}
