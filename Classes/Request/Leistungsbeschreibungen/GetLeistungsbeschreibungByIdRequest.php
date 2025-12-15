@@ -17,7 +17,7 @@ class GetLeistungsbeschreibungByIdRequest
      * @param bool   $sicheresKontaktformular   true : der Link auf das "Sichere Kontaktformular" der Behörde (im Bereich "Zuständigkeiten") wird ggf. mitgeliefert. false : Ohne Ermittlung des Links auf das "Sichere Kontaktformular" - Default
      */
     public function __construct(
-        public string $leistungId,
+        public string|int $leistungId,
         public ?string $gemeindekennziffer = null,
         public bool $mitRegionalenErgaenzungen = true,
         public bool $sicheresKontaktformular = false,
@@ -32,7 +32,6 @@ class GetLeistungsbeschreibungByIdRequest
     public function getQueryParams(): array
     {
         return array_filter([
-            'leistungId' => $this->leistungId,
             'gemeindekennziffer' => $this->gemeindekennziffer,
             'mitRegionalenErgaenzungen' => $this->mitRegionalenErgaenzungen,
             'sicheresKontaktformular' => $this->sicheresKontaktformular,

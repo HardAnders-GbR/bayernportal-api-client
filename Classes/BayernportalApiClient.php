@@ -7,6 +7,7 @@ namespace Hardanders\BayernPortalApiClient;
 use Hardanders\BayernPortalApiClient\Model\Ansprechpartner;
 use Hardanders\BayernPortalApiClient\Model\Behoerde;
 use Hardanders\BayernPortalApiClient\Model\Dienststelle;
+use Hardanders\BayernPortalApiClient\Model\Lebenslage;
 use Hardanders\BayernPortalApiClient\Model\Leistung;
 use Hardanders\BayernPortalApiClient\Model\Leistungsbeschreibung;
 use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerByIdRequest;
@@ -16,10 +17,14 @@ use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdeAnsprechpartne
 use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenRequest;
 use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdeRequest;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungsbeschreibungenRequest;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenRequest;
+use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslageByIdRequest;
+use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslagenRequest;
+use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungByIdRequest;
 use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungenRequest;
 use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungByIdRequest;
-use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungenVonDienststelleRequest;
+use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungenRequest;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -155,7 +160,7 @@ class BayernportalApiClient
      *
      * @return Leistungsbeschreibung[]
      */
-    public function getLeistungsbeschreibungenVonDienststelle(GetLeistungsbeschreibungenVonDienststelleRequest $request): array
+    public function getDienststellenLeistungsbeschreibungen(GetDienststellenLeistungsbeschreibungenRequest $request): array
     {
         $endpoint = sprintf('dienststellen/%s/leistungsbeschreibungen', $request->dienststellenschluessel);
 
@@ -167,7 +172,38 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['leistungsbeschreibung'] ?? [] as $data) {
-            $return[] = $this->serializer->deserialize(json_encode(['data' => $data]), Leistungsbeschreibung::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($data), Leistungsbeschreibung::class, 'json');
+        }
+
+        return $return;
+    }
+
+    /**
+     * Gibt eine Liste aller Leistungenbeschreibungen ohne Zuständigkeiten-Block zurück.
+     * Zur Abfrage der Zuständigkeiten sind
+     * - Einzelaufrufe der Ressource /rest/allgemein/v3/leistungsbeschreibungen/{leistung-id} oder
+     * - der Aufruf der Ressource /rest/allgemein/v3/dienststellen/{dienststellenschluessel}/leistungsbeschreibungen mit dem entsprechenden Aufrufparameter
+     * notwendig.
+     *
+     * GET /rest/allgemein/v3/leistungsbeschreibungen
+     *
+     * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungsbeschreibungen
+     *
+     * @return Leistungsbeschreibung[]
+     */
+    public function getLeistungsbeschreibungen(GetLeistungsbeschreibungenRequest $request): array
+    {
+        $endpoint = 'leistungsbeschreibungen';
+
+        $response = $this->request(
+            $endpoint,
+            $request->getQueryParams(),
+        );
+
+        $return = [];
+
+        foreach ($response['leistungsbeschreibung'] as $leistungsbeschreibungData) {
+            $return[] = $this->serializer->deserialize(json_encode($leistungsbeschreibungData), Leistungsbeschreibung::class, 'json');
         }
 
         return $return;
@@ -187,7 +223,7 @@ class BayernportalApiClient
             $request->getQueryParams(),
         );
 
-        return $this->serializer->deserialize(json_encode(['data' => $response['leistungsbeschreibung']]), Leistungsbeschreibung::class, 'json');
+        return $this->serializer->deserialize(json_encode($response['leistungsbeschreibung']), Leistungsbeschreibung::class, 'json');
     }
 
     /**
@@ -318,6 +354,74 @@ class BayernportalApiClient
         }
 
         return $return;
+    }
+
+    /**
+     * Gibt die Leistung mit der angegebenen Id zurück.
+     *
+     * GET /rest/allgemein/v3/leistungen/{leistung-id}
+     *
+     * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungen-leistung-id
+     */
+    public function getLeistungById(GetLeistungByIdRequest $request): ?Leistung
+    {
+        $endpoint = sprintf('leistungen/%s', $request->leistungId);
+
+        $response = $this->request(
+            $endpoint,
+            $request->getQueryParams()
+        );
+
+        return $response ? $this->serializer->deserialize(json_encode($response), Leistung::class, 'json') : null;
+    }
+
+    /**
+     * Gibt eine Liste aller Lebenslagen zurück.
+     *
+     * GET /rest/allgemein/v3/lebenslagen
+     *
+     * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-lebenslagen
+     *
+     * @return Lebenslage[]
+     */
+    public function getLebenslagen(GetLebenslagenRequest $request): array
+    {
+        $endpoint = 'lebenslagen';
+
+        $response = $this->request(
+            $endpoint,
+            $request->getQueryParams()
+        );
+
+        $return = [];
+
+        foreach ($response['lebenslage'] as $lebenslage) {
+            $return[] = $this->serializer->deserialize(json_encode($lebenslage), Lebenslage::class, 'json');
+        }
+
+        return $return;
+    }
+
+    /**
+     * Gibt die Lebenslage mit der angegebenen Id zurück.
+     *
+     * GET /rest/allgemein/v3/lebenslagen/{lebenslage-id}
+     *
+     * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-lebenslagen-lebenslage-id
+     */
+    public function getLebenslageById(GetLebenslageByIdRequest $request): ?Lebenslage
+    {
+        $endpoint = sprintf('lebenslagen/%s', $request->lebenslageId);
+
+        $response = $this->request(
+            $endpoint,
+        );
+
+        if (!$response) {
+            return null;
+        }
+
+        return $this->serializer->deserialize(json_encode($response), Lebenslage::class, 'json');
     }
 
     /**

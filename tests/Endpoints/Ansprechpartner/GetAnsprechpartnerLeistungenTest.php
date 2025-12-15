@@ -27,7 +27,7 @@ class GetAnsprechpartnerLeistungenTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetAnsprechpartnerLeistungenRequest(405816, false), true];
-        yield [new GetAnsprechpartnerLeistungenRequest(405816, true), false];
+        yield [new GetAnsprechpartnerLeistungenRequest($_ENV['TEST_API_ANSPRECHPARTNER_ID'], false), true];
+        yield [new GetAnsprechpartnerLeistungenRequest($_ENV['TEST_API_ANSPRECHPARTNER_ID'], true), false];
     }
 }

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="./Build/vendor/phpunit/phpunit/phpunit.xsd"
-    displayDetailsOnTestsThatTriggerWarnings="true"
-    colors="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="./Build/vendor/phpunit/phpunit/phpunit.xsd"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+        colors="true"
 >
     <php>
-        <env name="TEST_API_KEY" value=""/>
-        <env name="TEST_BASE_URL" value=""/>
-        <env name="TEST_ORGANISATION_ID" value=""/>
-        <env name="TEST_PST_ID" value=""/>
+        <ini name="memory_limit" value="512M"/>
 
-        <!-- Value format: BASE_URL::API_KEY::ORGANISATION_ID -->
-        <!-- Add as many test credentials as you like by just counting up the last digit in the env name -->
-        <env name="TEST_GETALLPST_1"
-             value="https://restapi-v4-sh.infodienste.de/::xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx::xxxxxxxxx"
-        />
+        <env name="TEST_API_USERNAME" value=""/>
+        <env name="TEST_API_PASSWORD" value=""/>
+        <env name="TEST_API_GEMEINDEKENNZIFFER" value=""/>
+        <env name="TEST_API_DIENSTSTELLENSCHLUESSEL" value=""/>
+        <env name="TEST_API_LEISTUNG_ID" value=""/>
+        <env name="TEST_API_ANSPRECHPARTNER_ID" value=""/>
+        <env name="TEST_API_BEHOERDE_ID" value=""/>
+        <env name="TEST_API_LEBENSLAGE_ID" value=""/>
     </php>
 </phpunit>

@@ -12,9 +12,9 @@ use Tests\Endpoints\BaseEndpointTest;
 class GetBehoerdeTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetBehoerde(string $behoerdeId, bool $expectedResultIsBehoerde): void
+    public function testGetBehoerde(GetBehoerdeRequest $request, bool $expectedResultIsBehoerde): void
     {
-        $response = $this->apiClient->getBehoerde(new GetBehoerdeRequest($behoerdeId));
+        $response = $this->apiClient->getBehoerde($request);
 
         if ($expectedResultIsBehoerde) {
             $this->assertInstanceOf(Behoerde::class, $response);
@@ -25,7 +25,7 @@ class GetBehoerdeTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield ['299443', true];
-        yield ['000000', false];
+        yield [new GetBehoerdeRequest($_ENV['TEST_API_BEHOERDE_ID']), true];
+        yield [new GetBehoerdeRequest('000000'), false];
     }
 }

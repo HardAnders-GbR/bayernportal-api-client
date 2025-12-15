@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen;
 
 /**
- * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-leistungsbeschreibungen
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungsbeschreibungen
  */
-class GetLeistungsbeschreibungenVonDienststelleRequest
+class GetLeistungsbeschreibungenRequest
 {
     public function __construct(
-        public string $dienststellenschluessel,
-        public string $gemeindekennziffer,
+        public ?string $gemeindekennziffer = null,
         public bool $mitRegionalenErgaenzungen = false,
-        public bool $mitZustaendigkeiten = false,
         public bool $mitIDallgemeineDaten = false,
     ) {
     }
@@ -26,7 +24,6 @@ class GetLeistungsbeschreibungenVonDienststelleRequest
         return array_filter([
             'gemeindekennziffer' => $this->gemeindekennziffer,
             'mitRegionalenErgaenzungen' => $this->mitRegionalenErgaenzungen,
-            'mitZustaendigkeiten' => $this->mitZustaendigkeiten,
             'mitIDallgemeineDaten' => $this->mitIDallgemeineDaten,
         ]);
     }

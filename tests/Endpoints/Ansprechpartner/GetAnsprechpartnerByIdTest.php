@@ -25,7 +25,7 @@ class GetAnsprechpartnerByIdTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetAnsprechpartnerByIdRequest(405816), true];
+        yield [new GetAnsprechpartnerByIdRequest($_ENV['TEST_API_ANSPRECHPARTNER_ID']), true];
         yield [new GetAnsprechpartnerByIdRequest(0), false];
     }
 }

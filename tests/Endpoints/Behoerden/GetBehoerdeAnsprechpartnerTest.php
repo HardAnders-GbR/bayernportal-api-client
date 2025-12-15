@@ -12,9 +12,9 @@ use Tests\Endpoints\BaseEndpointTest;
 class GetBehoerdeAnsprechpartnerTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetBehoerde(string $behoerdeId, bool $expectSuccess): void
+    public function testGetBehoerde(GetBehoerdeAnsprechpartnerRequest $request, bool $expectSuccess): void
     {
-        $response = $this->apiClient->getBehoerdeAnsprechpartner(new GetBehoerdeAnsprechpartnerRequest($behoerdeId));
+        $response = $this->apiClient->getBehoerdeAnsprechpartner($request);
 
         if (!$expectSuccess) {
             $this->assertEmpty($response);
@@ -27,7 +27,7 @@ class GetBehoerdeAnsprechpartnerTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield ['299443', true];
-        yield ['000000', false];
+        yield [new GetBehoerdeAnsprechpartnerRequest($_ENV['TEST_API_BEHOERDE_ID']), true];
+        yield [new GetBehoerdeAnsprechpartnerRequest('000000'), false];
     }
 }
