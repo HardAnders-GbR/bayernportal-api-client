@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Endpoints\Leistungsbeschreibungen;
+namespace Tests\Request\Leistungsbeschreibungen;
 
 use Hardanders\BayernPortalApiClient\Model\Leistungsbeschreibung;
 use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungByIdRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\Endpoints\BaseEndpointTest;
+use Tests\Request\BaseEndpointTest;
 
 class GetLeistungsbeschreibungByIdTest extends BaseEndpointTest
 {

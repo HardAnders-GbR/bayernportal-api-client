@@ -18,12 +18,12 @@ readonly class Dienststelle
         public string $website,
         public string $behoerdengruppe,
         public int $sortierreihenfolge,
-        public array $behoerdeZuordnungen,
-        public array $behoerdenGebaeudeZuordnungen,
         public string $dienststellenschluessel,
         public int $dienststelleLfdNr,
-        public string $bezeichnungZusatz,
-        public string $mitgliedVonVerwaltungsgemeinschaft,
+        public array $behoerdeZuordnungen = [],
+        public array $behoerdenGebaeudeZuordnungen = [],
+        public string $bezeichnungZusatz = '',
+        public string $mitgliedVonVerwaltungsgemeinschaft = '',
     ) {
     }
 }

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Endpoints\Dienststellen;
+namespace Tests\Request\Dienststellen;
 
 use Hardanders\BayernPortalApiClient\Model\Leistung;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungenRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\Endpoints\BaseEndpointTest;
+use Tests\Request\BaseEndpointTest;
 
 class GetDienststellenLeistungenTest extends BaseEndpointTest
 {

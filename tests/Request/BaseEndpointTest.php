@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Endpoints;
+namespace Tests\Request;
 
 use Hardanders\BayernPortalApiClient\BayernportalApiClient;
 use PHPUnit\Framework\TestCase;

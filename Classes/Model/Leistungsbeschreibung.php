@@ -6,6 +6,27 @@ namespace Hardanders\BayernPortalApiClient\Model;
 
 readonly class Leistungsbeschreibung
 {
+    /**
+     * @param mixed[] $bezeichnung
+     * @param mixed[] $stand
+     * @param mixed[] $kurzbeschreibung
+     * @param mixed[] $verantwortlicheBehoerde
+     * @param mixed[] $synonyme
+     * @param mixed[] $lebenslagen
+     * @param mixed[] $langbeschreibung
+     * @param mixed[] $voraussetzungen
+     * @param mixed[] $verwandteLeistungen
+     * @param mixed[] $links
+     * @param mixed[] $verfahrensablauf
+     * @param mixed[] $fristen
+     * @param mixed[] $bearbeitungsdauer
+     * @param mixed[] $unterlagen
+     * @param mixed[] $kosten
+     * @param mixed[] $formulare
+     * @param mixed[] $onlineVerfahren
+     * @param mixed[] $rechtsvorschriften
+     * @param mixed[] $rechtsbehelf
+     */
     public function __construct(
         public array $bezeichnung,
         public string $url,

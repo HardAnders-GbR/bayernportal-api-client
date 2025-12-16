@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace Hardanders\BayernPortalApiClient;
 
-use Hardanders\BayernPortalApiClient\Model\Ansprechpartner;
-use Hardanders\BayernPortalApiClient\Model\Behoerde;
-use Hardanders\BayernPortalApiClient\Model\Dienststelle;
-use Hardanders\BayernPortalApiClient\Model\Lebenslage;
-use Hardanders\BayernPortalApiClient\Model\Leistung;
-use Hardanders\BayernPortalApiClient\Model\Leistungsbeschreibung;
 use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerByIdRequest;
 use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerLeistungenRequest;
 use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerRequest;
 use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdeAnsprechpartnerRequest;
 use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenRequest;
 use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdeRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenFormulareRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLebenslagenRequest;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungenRequest;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungsbeschreibungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenOnlineverfahrenRequest;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststelleRequest;
 use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslageByIdRequest;
 use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslagenRequest;
 use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungByIdRequest;
@@ -64,7 +62,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen
      *
-     * @return Dienststelle[]
+     * @return Model\Dienststelle[]
      */
     public function getDienststellen(GetDienststellenRequest $request): array
     {
@@ -78,10 +76,29 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['dienststelle'] ?? [] as $dienststelleData) {
-            $return[] = $this->serializer->deserialize(json_encode($dienststelleData), Dienststelle::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($dienststelleData), Model\Dienststelle::class, 'json');
         }
 
         return $return;
+    }
+
+    /**
+     * Gibt alle Dienststellen zurück, auf welche die Benutzerkennung Zugriff hat.
+     *
+     * GET /rest/allgemein/v3/dienststellen/{dienststellenschluessel}
+     *
+     * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen
+     */
+    public function getDienststelle(GetDienststelleRequest $request): ?Model\Dienststelle
+    {
+        $endpoint = sprintf('dienststellen/%s', $request->dienststellenschluessel);
+
+        $response = $this->request(
+            $endpoint,
+            $request->getQueryParams(),
+        );
+
+        return $response ? $this->serializer->deserialize(json_encode($response['dienststelle'][0]), Model\Dienststelle::class, 'json') : null;
     }
 
     /**
@@ -91,7 +108,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-leistungen
      *
-     * @return Leistung[]
+     * @return Model\Leistung[]
      */
     public function getDienststellenLeistungen(GetDienststellenLeistungenRequest $request): array
     {
@@ -105,7 +122,81 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['leistung'] ?? [] as $data) {
-            $return[] = $this->serializer->deserialize(json_encode($data), Leistung::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($data), Model\Leistung::class, 'json');
+        }
+
+        return $return;
+    }
+
+    /**
+     * Gibt die Formulare der Dienststelle mit dem angegebenen Dienststellenschlüssel zurück.
+     *
+     * GET /rest/allgemein/v3/dienststellen/{dienststellenschluessel}/formulare
+     *
+     * @return Model\LeistungMitFormularen[]
+     */
+    public function getDienststellenFormulare(GetDienststellenFormulareRequest $request): array
+    {
+        $endpoint = sprintf('dienststellen/%s/formulare', $request->dienststellenschluessel);
+
+        $response = $this->request(
+            $endpoint,
+            $request->getQueryParams(),
+        );
+
+        $return = [];
+
+        foreach ($response['leistungMitFormularen'] ?? [] as $data) {
+            $return[] = $this->serializer->deserialize(json_encode($data), Model\LeistungMitFormularen::class, 'json');
+        }
+
+        return $return;
+    }
+
+    /**
+     * Gibt die Onlineverfahen der Dienststelle mit dem angegebenen Dienststellenschlüssel zurück.
+     *
+     * GET /rest/allgemein/v3/dienststellen/{dienststellenschluessel}/onlineverfahren
+     */
+    public function getDienststellenOnlineverfahren(GetDienststellenOnlineverfahrenRequest $request): array
+    {
+        $endpoint = sprintf('dienststellen/%s/onlineverfahren', $request->dienststellenschluessel);
+
+        $response = $this->request(
+            $endpoint,
+            $request->getQueryParams(),
+        );
+
+        $return = [];
+
+        foreach ($response['leistungMitOnlineverfahren'] ?? [] as $item) {
+            $return[] = $this->serializer->deserialize(json_encode($item), Model\LeistungMitOnlineverfahren::class, 'json');
+        }
+
+        return $return;
+    }
+
+    /**
+     * Gibt die Lebenslagen für die Dienststelle mit dem angegebenen Dienststellenschlüssel zurück.
+     *
+     * GET /rest/allgemein/v3/dienststellen/{dienststellenschluessel}/lebenslagen
+     *
+     * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-lebenslagen
+     *
+     * @return Model\Lebenslage[]
+     */
+    public function getDienststellenLebenslagen(GetDienststellenLebenslagenRequest $request): array
+    {
+        $endpoint = sprintf('dienststellen/%s/lebenslagen', $request->dienststellenschluessel);
+
+        $response = $this->request(
+            $endpoint,
+        );
+
+        $return = [];
+
+        foreach ($response['lebenslage'] ?? [] as $item) {
+            $return[] = $this->serializer->deserialize(json_encode($item), Model\Lebenslage::class, 'json');
         }
 
         return $return;
@@ -118,7 +209,7 @@ class BayernportalApiClient
      *
      * GET /rest/allgemein/v3/behoerden/{behoerde-id}/ansprechpartner
      *
-     * @return Ansprechpartner[]
+     * @return Model\Ansprechpartner[]
      */
     public function getBehoerdeAnsprechpartner(GetBehoerdeAnsprechpartnerRequest $request): array
     {
@@ -129,7 +220,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['ansprechpartner']['ap'] ?? [] as $ap) {
-            $return[] = $this->serializer->deserialize(json_encode($ap), Ansprechpartner::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($ap), Model\Ansprechpartner::class, 'json');
         }
 
         return $return;
@@ -144,13 +235,13 @@ class BayernportalApiClient
      *
      * GET /rest/allgemein/v3/ansprechpartner/{ansprechpartner-id}
      */
-    public function getAnsprechpartnerById(GetAnsprechpartnerByIdRequest $request): ?Ansprechpartner
+    public function getAnsprechpartnerById(GetAnsprechpartnerByIdRequest $request): ?Model\Ansprechpartner
     {
         $endpoint = sprintf('ansprechpartner/%s', $request->ansprechpartnerId);
 
         $response = $this->request($endpoint);
 
-        return $response['ap'] ? $this->serializer->deserialize(json_encode($response['ap'][0]), Ansprechpartner::class, 'json') : null;
+        return $response['ap'] ? $this->serializer->deserialize(json_encode($response['ap'][0]), Model\Ansprechpartner::class, 'json') : null;
     }
 
     /**
@@ -158,7 +249,7 @@ class BayernportalApiClient
      *
      * GET /rest/allgemein/v3/dienststellen/{dienststellenschluessel}/leistungsbeschreibungen
      *
-     * @return Leistungsbeschreibung[]
+     * @return Model\Leistungsbeschreibung[]
      */
     public function getDienststellenLeistungsbeschreibungen(GetDienststellenLeistungsbeschreibungenRequest $request): array
     {
@@ -172,7 +263,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['leistungsbeschreibung'] ?? [] as $data) {
-            $return[] = $this->serializer->deserialize(json_encode($data), Leistungsbeschreibung::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($data), Model\Leistungsbeschreibung::class, 'json');
         }
 
         return $return;
@@ -189,7 +280,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungsbeschreibungen
      *
-     * @return Leistungsbeschreibung[]
+     * @return Model\Leistungsbeschreibung[]
      */
     public function getLeistungsbeschreibungen(GetLeistungsbeschreibungenRequest $request): array
     {
@@ -203,7 +294,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['leistungsbeschreibung'] as $leistungsbeschreibungData) {
-            $return[] = $this->serializer->deserialize(json_encode($leistungsbeschreibungData), Leistungsbeschreibung::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($leistungsbeschreibungData), Model\Leistungsbeschreibung::class, 'json');
         }
 
         return $return;
@@ -214,7 +305,7 @@ class BayernportalApiClient
      *
      * GET /rest/allgemein/v3/leistungsbeschreibungen/{leistung-id}
      */
-    public function getLeistungsbeschreibungById(GetLeistungsbeschreibungByIdRequest $request): ?Leistungsbeschreibung
+    public function getLeistungsbeschreibungById(GetLeistungsbeschreibungByIdRequest $request): ?Model\Leistungsbeschreibung
     {
         $endpoint = sprintf('leistungsbeschreibungen/%s', $request->leistungId);
 
@@ -223,7 +314,7 @@ class BayernportalApiClient
             $request->getQueryParams(),
         );
 
-        return $this->serializer->deserialize(json_encode($response['leistungsbeschreibung']), Leistungsbeschreibung::class, 'json');
+        return $this->serializer->deserialize(json_encode($response['leistungsbeschreibung']), Model\Leistungsbeschreibung::class, 'json');
     }
 
     /**
@@ -233,7 +324,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden
      *
-     * @return Behoerde[]
+     * @return Model\Behoerde[]
      */
     public function getBehoerden(GetBehoerdenRequest $request): array
     {
@@ -247,7 +338,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['behoerde'] ?? [] as $behoerdeData) {
-            $return[] = $this->serializer->deserialize(json_encode($behoerdeData), Behoerde::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($behoerdeData), Model\Behoerde::class, 'json');
         }
 
         return $return;
@@ -261,9 +352,9 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-behoerde-id
      *
-     * @return Behoerde|null returns null if no Behörde was found
+     * @return Model\Behoerde|null returns null if no Behörde was found
      */
-    public function getBehoerde(GetBehoerdeRequest $request): ?Behoerde
+    public function getBehoerde(GetBehoerdeRequest $request): ?Model\Behoerde
     {
         $endpoint = sprintf('behoerden/%s', $request->behoerdeId);
 
@@ -271,7 +362,7 @@ class BayernportalApiClient
             $endpoint,
         );
 
-        return $response ? $this->serializer->deserialize(json_encode($response['behoerde']), Behoerde::class, 'json') : null;
+        return $response ? $this->serializer->deserialize(json_encode($response['behoerde']), Model\Behoerde::class, 'json') : null;
     }
 
     /**
@@ -281,7 +372,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-ansprechpartner
      *
-     * @return Ansprechpartner[]
+     * @return Model\Ansprechpartner[]
      */
     public function getAnsprechpartner(GetAnsprechpartnerRequest $request): array
     {
@@ -295,7 +386,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['ap'] as $ap) {
-            $return[] = $this->serializer->deserialize(json_encode($ap), Ansprechpartner::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($ap), Model\Ansprechpartner::class, 'json');
         }
 
         return $return;
@@ -309,7 +400,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-ansprechpartner-leistungen
      *
-     * @return Leistung[]
+     * @return Model\Leistung[]
      */
     public function getAnsprechpartnerLeistungen(GetAnsprechpartnerLeistungenRequest $request): array
     {
@@ -323,7 +414,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['leistung'] as $leistung) {
-            $return[] = $this->serializer->deserialize(json_encode($leistung), Leistung::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($leistung), Model\Leistung::class, 'json');
         }
 
         return $return;
@@ -336,7 +427,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungen
      *
-     * @return Leistung[]
+     * @return Model\Leistung[]
      */
     public function getLeistungen(GetLeistungenRequest $request): array
     {
@@ -350,7 +441,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['leistung'] as $leistung) {
-            $return[] = $this->serializer->deserialize(json_encode($leistung), Leistung::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($leistung), Model\Leistung::class, 'json');
         }
 
         return $return;
@@ -363,7 +454,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungen-leistung-id
      */
-    public function getLeistungById(GetLeistungByIdRequest $request): ?Leistung
+    public function getLeistungById(GetLeistungByIdRequest $request): ?Model\Leistung
     {
         $endpoint = sprintf('leistungen/%s', $request->leistungId);
 
@@ -372,7 +463,7 @@ class BayernportalApiClient
             $request->getQueryParams()
         );
 
-        return $response ? $this->serializer->deserialize(json_encode($response), Leistung::class, 'json') : null;
+        return $response ? $this->serializer->deserialize(json_encode($response), Model\Leistung::class, 'json') : null;
     }
 
     /**
@@ -382,7 +473,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-lebenslagen
      *
-     * @return Lebenslage[]
+     * @return Model\Lebenslage[]
      */
     public function getLebenslagen(GetLebenslagenRequest $request): array
     {
@@ -396,7 +487,7 @@ class BayernportalApiClient
         $return = [];
 
         foreach ($response['lebenslage'] as $lebenslage) {
-            $return[] = $this->serializer->deserialize(json_encode($lebenslage), Lebenslage::class, 'json');
+            $return[] = $this->serializer->deserialize(json_encode($lebenslage), Model\Lebenslage::class, 'json');
         }
 
         return $return;
@@ -409,7 +500,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-lebenslagen-lebenslage-id
      */
-    public function getLebenslageById(GetLebenslageByIdRequest $request): ?Lebenslage
+    public function getLebenslageById(GetLebenslageByIdRequest $request): ?Model\Lebenslage
     {
         $endpoint = sprintf('lebenslagen/%s', $request->lebenslageId);
 
@@ -421,7 +512,7 @@ class BayernportalApiClient
             return null;
         }
 
-        return $this->serializer->deserialize(json_encode($response), Lebenslage::class, 'json');
+        return $this->serializer->deserialize(json_encode($response), Model\Lebenslage::class, 'json');
     }
 
     /**

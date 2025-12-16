@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Endpoints\Dienststellen;
+namespace Tests\Request\Dienststellen;
 
 use Hardanders\BayernPortalApiClient\Model\Dienststelle;
 use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenRequest;
-use Tests\Endpoints\BaseEndpointTest;
+use Tests\Request\BaseEndpointTest;
 
 class GetDienststellenTest extends BaseEndpointTest
 {

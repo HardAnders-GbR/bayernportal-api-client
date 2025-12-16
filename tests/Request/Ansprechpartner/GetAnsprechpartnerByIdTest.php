@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Endpoints\Ansprechpartner;
+namespace Tests\Request\Ansprechpartner;
 
 use Hardanders\BayernPortalApiClient\Model\Ansprechpartner;
 use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerByIdRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\Endpoints\BaseEndpointTest;
+use Tests\Request\BaseEndpointTest;
 
 class GetAnsprechpartnerByIdTest extends BaseEndpointTest
 {

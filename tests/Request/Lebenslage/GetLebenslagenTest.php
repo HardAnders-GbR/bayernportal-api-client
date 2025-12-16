@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Endpoints\Lebenslage;
+namespace Tests\Request\Lebenslage;
 
 use Hardanders\BayernPortalApiClient\Model\Lebenslage;
 use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslagenRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\Endpoints\BaseEndpointTest;
+use Tests\Request\BaseEndpointTest;
 
 class GetLebenslagenTest extends BaseEndpointTest
 {
