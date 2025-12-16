@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Request\Ansprechpartner;
 
 use Hardanders\BayernPortalApiClient\Model\Ansprechpartner;
-use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerByIdRequest;
+use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\AnsprechpartnerByIdRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Request\BaseEndpointTest;
 
 class GetAnsprechpartnerByIdTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetAnsprechpartner(GetAnsprechpartnerByIdRequest $request, bool $expectSuccess): void
+    public function testGetAnsprechpartner(AnsprechpartnerByIdRequest $request, bool $expectSuccess): void
     {
         $response = $this->apiClient->getAnsprechpartnerById($request);
 
@@ -25,7 +25,7 @@ class GetAnsprechpartnerByIdTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetAnsprechpartnerByIdRequest($_ENV['TEST_API_ANSPRECHPARTNER_ID']), true];
-        yield [new GetAnsprechpartnerByIdRequest(0), false];
+        yield [new AnsprechpartnerByIdRequest($_ENV['TEST_API_ANSPRECHPARTNER_ID']), true];
+        yield [new AnsprechpartnerByIdRequest(0), false];
     }
 }

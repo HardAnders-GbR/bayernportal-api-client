@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Hardanders\BayernPortalApiClient\Request\Dienststellen;
 
 /**
- * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-formulare
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-onlineverfahren
  */
-class GetDienststellenFormulareRequest
+class DienststellenOnlineverfahrenRequest
 {
     public function __construct(
-        public string $dienststellenschluessel,
+        public string|int $dienststellenschluessel,
         public ?string $gemeindekennziffer = null,
         public bool $gruppiertNachLeistungen = true,
     ) {

@@ -7,12 +7,12 @@ namespace Hardanders\BayernPortalApiClient\Request\Behoerden;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-gebaeude-ansprechpartner
  */
-class GetBehoerdenGebaeudeAnsprechpartnerRequest
+class BehoerdenGebaeudeAnsprechpartnerRequest
 {
     public function __construct(
-        public string $behoerdeId,
-        public string $gebaeudeId,
-        public string $ansprechpartnerId,
+        public string|int $behoerdeId,
+        public string|int $gebaeudeId,
+        public string|int $ansprechpartnerId,
     ) {
     }
 }

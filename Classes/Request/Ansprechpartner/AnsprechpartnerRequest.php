@@ -7,7 +7,7 @@ namespace Hardanders\BayernPortalApiClient\Request\Ansprechpartner;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-ansprechpartner
  */
-class GetAnsprechpartnerRequest
+class AnsprechpartnerRequest
 {
     public function __construct(
         public bool $full = false,

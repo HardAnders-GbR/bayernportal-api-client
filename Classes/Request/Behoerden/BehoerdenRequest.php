@@ -7,7 +7,7 @@ namespace Hardanders\BayernPortalApiClient\Request\Behoerden;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden
  */
-class GetBehoerdenRequest
+class BehoerdenRequest
 {
     public function __construct(
         public bool $full = false,

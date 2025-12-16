@@ -6,27 +6,27 @@ namespace Hardanders\BayernPortalApiClient;
 
 use Hardanders\BayernPortalApiClient\Model\Gebaeude;
 use Hardanders\BayernPortalApiClient\Model\Leistung;
-use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerByIdRequest;
-use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerLeistungenRequest;
-use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\GetAnsprechpartnerRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenAbgegebeneLeistungenRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenAnsprechpartnerRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenGebaeudeAnsprechpartnerRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenGebaeudeRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenLeistungenRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdenRequest;
-use Hardanders\BayernPortalApiClient\Request\Behoerden\GetBehoerdeRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenFormulareRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLebenslagenRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungenRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungsbeschreibungenRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenOnlineverfahrenRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenRequest;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststelleRequest;
-use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslagenRequest;
-use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslageRequest;
-use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungenRequest;
-use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungRequest;
+use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\AnsprechpartnerByIdRequest;
+use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\AnsprechpartnerLeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Ansprechpartner\AnsprechpartnerRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdenAbgegebeneLeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdenAnsprechpartnerRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdenGebaeudeAnsprechpartnerRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdenGebaeudeRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdenLeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdenRequest;
+use Hardanders\BayernPortalApiClient\Request\Behoerden\BehoerdeRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenFormulareRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenLebenslagenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenLeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenLeistungsbeschreibungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenOnlineverfahrenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststelleRequest;
+use Hardanders\BayernPortalApiClient\Request\Lebenslagen\LebenslagenRequest;
+use Hardanders\BayernPortalApiClient\Request\Lebenslagen\LebenslageRequest;
+use Hardanders\BayernPortalApiClient\Request\Leistungen\LeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Leistungen\LeistungRequest;
 use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungenRequest;
 use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungRequest;
 use Symfony\Component\HttpClient\Exception\ClientException;
@@ -70,7 +70,7 @@ class BayernportalApiClient
      *
      * @return Model\Dienststelle[]
      */
-    public function getDienststellen(GetDienststellenRequest $request): array
+    public function getDienststellen(DienststellenRequest $request): array
     {
         $endpoint = 'dienststellen';
 
@@ -95,7 +95,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen
      */
-    public function getDienststelle(GetDienststelleRequest $request): ?Model\Dienststelle
+    public function getDienststelle(DienststelleRequest $request): ?Model\Dienststelle
     {
         $endpoint = sprintf('dienststellen/%s', $request->dienststellenschluessel);
 
@@ -116,7 +116,7 @@ class BayernportalApiClient
      *
      * @return Leistung[]
      */
-    public function getDienststellenLeistungen(GetDienststellenLeistungenRequest $request): array
+    public function getDienststellenLeistungen(DienststellenLeistungenRequest $request): array
     {
         $endpoint = sprintf('dienststellen/%s/leistungen', $request->dienststellenschluessel);
 
@@ -141,7 +141,7 @@ class BayernportalApiClient
      *
      * @return Model\LeistungMitFormularen[]
      */
-    public function getDienststellenFormulare(GetDienststellenFormulareRequest $request): array
+    public function getDienststellenFormulare(DienststellenFormulareRequest $request): array
     {
         $endpoint = sprintf('dienststellen/%s/formulare', $request->dienststellenschluessel);
 
@@ -166,7 +166,7 @@ class BayernportalApiClient
      *
      * @return Model\LeistungMitOnlineverfahren[]
      */
-    public function getDienststellenOnlineverfahren(GetDienststellenOnlineverfahrenRequest $request): array
+    public function getDienststellenOnlineverfahren(DienststellenOnlineverfahrenRequest $request): array
     {
         $endpoint = sprintf('dienststellen/%s/onlineverfahren', $request->dienststellenschluessel);
 
@@ -193,7 +193,7 @@ class BayernportalApiClient
      *
      * @return Model\Lebenslage[]
      */
-    public function getDienststellenLebenslagen(GetDienststellenLebenslagenRequest $request): array
+    public function getDienststellenLebenslagen(DienststellenLebenslagenRequest $request): array
     {
         $endpoint = sprintf('dienststellen/%s/lebenslagen', $request->dienststellenschluessel);
 
@@ -219,7 +219,7 @@ class BayernportalApiClient
      *
      * @return Model\Ansprechpartner[]
      */
-    public function getBehoerdeAnsprechpartner(GetBehoerdenAnsprechpartnerRequest $request): array
+    public function getBehoerdeAnsprechpartner(BehoerdenAnsprechpartnerRequest $request): array
     {
         $endpoint = sprintf('behoerden/%s/ansprechpartner', $request->behoerdeId);
 
@@ -243,7 +243,7 @@ class BayernportalApiClient
      *
      * GET /rest/allgemein/v3/ansprechpartner/{ansprechpartner-id}
      */
-    public function getAnsprechpartnerById(GetAnsprechpartnerByIdRequest $request): ?Model\Ansprechpartner
+    public function getAnsprechpartnerById(AnsprechpartnerByIdRequest $request): ?Model\Ansprechpartner
     {
         $endpoint = sprintf('ansprechpartner/%s', $request->ansprechpartnerId);
 
@@ -259,7 +259,7 @@ class BayernportalApiClient
      *
      * @return Model\Leistungsbeschreibung[]
      */
-    public function getDienststellenLeistungsbeschreibungen(GetDienststellenLeistungsbeschreibungenRequest $request): array
+    public function getDienststellenLeistungsbeschreibungen(DienststellenLeistungsbeschreibungenRequest $request): array
     {
         $endpoint = sprintf('dienststellen/%s/leistungsbeschreibungen', $request->dienststellenschluessel);
 
@@ -334,7 +334,7 @@ class BayernportalApiClient
      *
      * @return Model\Behoerde[]
      */
-    public function getBehoerden(GetBehoerdenRequest $request): array
+    public function getBehoerden(BehoerdenRequest $request): array
     {
         $endpoint = 'behoerden';
 
@@ -360,7 +360,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-behoerde-id
      */
-    public function getBehoerde(GetBehoerdeRequest $request): ?Model\Behoerde
+    public function getBehoerde(BehoerdeRequest $request): ?Model\Behoerde
     {
         $endpoint = sprintf('behoerden/%s', $request->behoerdeId);
 
@@ -379,7 +379,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-gebaeude
      */
-    public function getBehoerdenGebaeude(GetBehoerdenGebaeudeRequest $request): ?Gebaeude
+    public function getBehoerdenGebaeude(BehoerdenGebaeudeRequest $request): ?Gebaeude
     {
         $endpoint = sprintf('behoerden/%s/gebaeude/%s', $request->behoerdeId, $request->gebaeudeId);
 
@@ -398,7 +398,7 @@ class BayernportalApiClient
      *
      * @return Leistung[] returns empty array if no leistungen are found
      */
-    public function getBehoerdenLeistungen(GetBehoerdenLeistungenRequest $request): array
+    public function getBehoerdenLeistungen(BehoerdenLeistungenRequest $request): array
     {
         $endpoint = sprintf('behoerden/%s/leistungen', $request->behoerdeId);
 
@@ -425,7 +425,7 @@ class BayernportalApiClient
      *
      * @return Leistung[]
      */
-    public function getBehoerdenAbgegebeneLeistungen(GetBehoerdenAbgegebeneLeistungenRequest $request): array
+    public function getBehoerdenAbgegebeneLeistungen(BehoerdenAbgegebeneLeistungenRequest $request): array
     {
         $endpoint = sprintf('behoerden/%s/abgegebene-leistungen', $request->behoerdeId);
 
@@ -449,7 +449,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-gebaeude-ansprechpartner
      */
-    public function getBehoerdenGebaeudeAnsprechpartner(GetBehoerdenGebaeudeAnsprechpartnerRequest $request): ?Model\Ansprechpartner
+    public function getBehoerdenGebaeudeAnsprechpartner(BehoerdenGebaeudeAnsprechpartnerRequest $request): ?Model\Ansprechpartner
     {
         $endpoint = sprintf('behoerden/%s/gebaeude/%s/ansprechpartner/%s', $request->behoerdeId, $request->gebaeudeId, $request->ansprechpartnerId);
 
@@ -467,7 +467,7 @@ class BayernportalApiClient
      *
      * @return Model\Ansprechpartner[]
      */
-    public function getAnsprechpartner(GetAnsprechpartnerRequest $request): array
+    public function getAnsprechpartner(AnsprechpartnerRequest $request): array
     {
         $endpoint = 'ansprechpartner';
 
@@ -495,7 +495,7 @@ class BayernportalApiClient
      *
      * @return Leistung[]
      */
-    public function getAnsprechpartnerLeistungen(GetAnsprechpartnerLeistungenRequest $request): array
+    public function getAnsprechpartnerLeistungen(AnsprechpartnerLeistungenRequest $request): array
     {
         $endpoint = sprintf('ansprechpartner/%s/leistungen', $request->ansprechpartnerId);
 
@@ -522,7 +522,7 @@ class BayernportalApiClient
      *
      * @return Leistung[]
      */
-    public function getLeistungen(GetLeistungenRequest $request): array
+    public function getLeistungen(LeistungenRequest $request): array
     {
         $endpoint = 'leistungen';
 
@@ -547,7 +547,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungen-leistung-id
      */
-    public function getLeistung(GetLeistungRequest $request): ?Leistung
+    public function getLeistung(LeistungRequest $request): ?Leistung
     {
         $endpoint = sprintf('leistungen/%s', $request->leistungId);
 
@@ -568,7 +568,7 @@ class BayernportalApiClient
      *
      * @return Model\Lebenslage[]
      */
-    public function getLebenslagen(GetLebenslagenRequest $request): array
+    public function getLebenslagen(LebenslagenRequest $request): array
     {
         $endpoint = 'lebenslagen';
 
@@ -593,7 +593,7 @@ class BayernportalApiClient
      *
      * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-lebenslagen-lebenslage-id
      */
-    public function getLebenslage(GetLebenslageRequest $request): ?Model\Lebenslage
+    public function getLebenslage(LebenslageRequest $request): ?Model\Lebenslage
     {
         $endpoint = sprintf('lebenslagen/%s', $request->lebenslageId);
 

@@ -7,11 +7,11 @@ namespace Hardanders\BayernPortalApiClient\Request\Dienststellen;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-leistungsbeschreibungen
  */
-class GetDienststellenLeistungsbeschreibungenRequest
+class DienststellenLeistungsbeschreibungenRequest
 {
     public function __construct(
         public string|int $dienststellenschluessel,
-        public string|int $gemeindekennziffer,
+        public ?string $gemeindekennziffer,
         public bool $mitRegionalenErgaenzungen = false,
         public bool $mitZustaendigkeiten = false,
         public bool $mitIDallgemeineDaten = false,

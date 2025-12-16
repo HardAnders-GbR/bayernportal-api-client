@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Request\Dienststellen;
 
 use Hardanders\BayernPortalApiClient\Model\Leistung;
-use Hardanders\BayernPortalApiClient\Request\Dienststellen\GetDienststellenLeistungenRequest;
+use Hardanders\BayernPortalApiClient\Request\Dienststellen\DienststellenLeistungenRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Request\BaseEndpointTest;
 
 class GetDienststellenLeistungenTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetDienststellenLeistungen(GetDienststellenLeistungenRequest $request): void
+    public function testGetDienststellenLeistungen(DienststellenLeistungenRequest $request): void
     {
         $response = $this->apiClient->getDienststellenLeistungen($request);
 
@@ -25,6 +25,6 @@ class GetDienststellenLeistungenTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetDienststellenLeistungenRequest($_ENV['TEST_API_DIENSTSTELLENSCHLUESSEL'])];
+        yield [new DienststellenLeistungenRequest($_ENV['TEST_API_DIENSTSTELLENSCHLUESSEL'])];
     }
 }

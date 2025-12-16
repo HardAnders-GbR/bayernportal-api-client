@@ -7,7 +7,7 @@ namespace Hardanders\BayernPortalApiClient\Request\Lebenslagen;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-lebenslagen
  */
-class GetLebenslagenRequest
+class LebenslagenRequest
 {
     public function __construct(
         public bool $leistungenZugeordnet,

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Hardanders\BayernPortalApiClient\Request\Ansprechpartner;
+namespace Hardanders\BayernPortalApiClient\Request\Behoerden;
 
 /**
- * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-ansprechpartner-leistungen
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-leistungen
  */
-class GetAnsprechpartnerLeistungenRequest
+class BehoerdenLeistungenRequest
 {
     public function __construct(
-        public string|int $ansprechpartnerId,
-        public bool $nurDirekteLeistungszuordnungen,
+        public string|int $behoerdeId,
+        public bool $nurDirekteLeistungszuordnungen = true,
     ) {
     }
 

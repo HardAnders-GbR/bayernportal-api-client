@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Hardanders\BayernPortalApiClient\Request\Leistungen;
 
-class GetLeistungenRequest
+/**
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungen
+ */
+class LeistungenRequest
 {
     public function __construct(
         public ?string $gemeindekennziffer = null,

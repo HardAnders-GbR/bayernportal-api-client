@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Request\Lebenslage;
 
 use Hardanders\BayernPortalApiClient\Model\Lebenslage;
-use Hardanders\BayernPortalApiClient\Request\Lebenslagen\GetLebenslageRequest;
+use Hardanders\BayernPortalApiClient\Request\Lebenslagen\LebenslageRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Request\BaseEndpointTest;
 
 class GetLebenslageByIdTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetLebenslageById(GetLebenslageRequest $request, bool $expectSuccess): void
+    public function testGetLebenslageById(LebenslageRequest $request, bool $expectSuccess): void
     {
         $response = $this->apiClient->getLebenslage($request);
 
@@ -25,7 +25,7 @@ class GetLebenslageByIdTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetLebenslageRequest($_ENV['TEST_API_LEBENSLAGE_ID']), true];
-        yield [new GetLebenslageRequest(0), false];
+        yield [new LebenslageRequest($_ENV['TEST_API_LEBENSLAGE_ID']), true];
+        yield [new LebenslageRequest(0), false];
     }
 }

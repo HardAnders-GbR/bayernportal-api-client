@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Hardanders\BayernPortalApiClient\Request\Dienststellen;
 
 /**
- * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-dienststellenschluessel
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-leistungen
  */
-class GetDienststelleRequest
+class DienststellenLeistungenRequest
 {
     public function __construct(
-        public string|int $dienststellenschluessel,
-        public string|int|null $gemeindekennziffer = null,
+        public string $dienststellenschluessel,
+        public ?string $gemeindekennziffer = null,
     ) {
     }
 
     /**
-     * @return array<string, string|int>
+     * @return array<string, string>
      */
     public function getQueryParams(): array
     {

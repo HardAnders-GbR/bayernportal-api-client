@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Hardanders\BayernPortalApiClient\Request\Leistungen;
+namespace Hardanders\BayernPortalApiClient\Request\Dienststellen;
 
-class GetLeistungRequest
+/**
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen-dienststellenschluessel
+ */
+class DienststelleRequest
 {
     public function __construct(
-        public string|int $leistungId,
+        public string|int $dienststellenschluessel,
         public ?string $gemeindekennziffer = null,
     ) {
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|int>
      */
     public function getQueryParams(): array
     {

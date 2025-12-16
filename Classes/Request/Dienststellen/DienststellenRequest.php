@@ -7,7 +7,7 @@ namespace Hardanders\BayernPortalApiClient\Request\Dienststellen;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-dienststellen
  */
-class GetDienststellenRequest
+class DienststellenRequest
 {
     /**
      * @param bool $full true : vollständige Daten zur Dienststelle zurückgeben false : Daten in Kurzform zurückgeben - Default (nicht Logo, Kurzbeschreibung, Langbeschreibung, Behördenzuordnungen, Gebäudezuordnungen)
