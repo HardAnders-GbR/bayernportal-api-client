@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Request\Leistungen;
 
 use Hardanders\BayernPortalApiClient\Model\Leistung;
-use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungByIdRequest;
+use Hardanders\BayernPortalApiClient\Request\Leistungen\GetLeistungRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Request\BaseEndpointTest;
 
 class GetLeistungByIdTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetLeistungen(GetLeistungByIdRequest $request, bool $expectSuccess): void
+    public function testGetLeistungen(GetLeistungRequest $request, bool $expectSuccess): void
     {
-        $response = $this->apiClient->getLeistungById($request);
+        $response = $this->apiClient->getLeistung($request);
 
         if ($expectSuccess) {
             $this->assertInstanceOf(Leistung::class, $response);
@@ -25,9 +25,9 @@ class GetLeistungByIdTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetLeistungByIdRequest($_ENV['TEST_API_LEISTUNG_ID'], $_ENV['TEST_API_GEMEINDEKENNZIFFER']), true];
-        yield [new GetLeistungByIdRequest(0, $_ENV['TEST_API_GEMEINDEKENNZIFFER']), false];
-        yield [new GetLeistungByIdRequest('0', $_ENV['TEST_API_GEMEINDEKENNZIFFER']), false];
-        yield [new GetLeistungByIdRequest('0'), false];
+        yield [new GetLeistungRequest($_ENV['TEST_API_LEISTUNG_ID'], $_ENV['TEST_API_GEMEINDEKENNZIFFER']), true];
+        yield [new GetLeistungRequest(0, $_ENV['TEST_API_GEMEINDEKENNZIFFER']), false];
+        yield [new GetLeistungRequest('0', $_ENV['TEST_API_GEMEINDEKENNZIFFER']), false];
+        yield [new GetLeistungRequest('0'), false];
     }
 }

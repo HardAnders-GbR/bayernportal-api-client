@@ -9,7 +9,7 @@ use Hardanders\BayernPortalApiClient\Enum\BehoerdenAnsprechpartnerZuordnungen;
 /**
  * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-leistungsbeschreibungen-leistung-id
  */
-class GetLeistungsbeschreibungByIdRequest
+class GetLeistungsbeschreibungRequest
 {
     /**
      * @param string $gemeindekennziffer        8-stelliger Amtlicher Gemeindeschlüssel eines Ortes in Bayern, für den der Response lokalisiert werden soll (z.B. 09162000 für München).

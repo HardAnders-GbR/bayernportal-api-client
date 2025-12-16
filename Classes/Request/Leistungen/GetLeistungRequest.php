@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hardanders\BayernPortalApiClient\Request\Leistungen;
 
-class GetLeistungByIdRequest
+class GetLeistungRequest
 {
     public function __construct(
         public string|int $leistungId,

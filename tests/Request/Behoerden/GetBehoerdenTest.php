@@ -23,7 +23,7 @@ class GetBehoerdenTest extends BaseEndpointTest
 
     public static function dataProvider(): iterable
     {
-        yield [new GetBehoerdenRequest(full: false)];
         yield [new GetBehoerdenRequest(full: true)];
+        yield [new GetBehoerdenRequest(full: false)];
     }
 }

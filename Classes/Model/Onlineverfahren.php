@@ -6,6 +6,11 @@ namespace Hardanders\BayernPortalApiClient\Model;
 
 readonly class Onlineverfahren
 {
+    /**
+     * @param mixed[] $sprache                todo specify type
+     * @param mixed[] $identifizierungsmittel todo specify type
+     * @param mixed[] $zahlungsweise          todo specify type
+     */
     public function __construct(
         public int $id,
         public string $kurzbeschreibung,

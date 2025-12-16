@@ -6,6 +6,9 @@ namespace Hardanders\BayernPortalApiClient\Model;
 
 class LeistungMitFormularen
 {
+    /**
+     * @param mixed[] $formulare todo specify type
+     */
     public function __construct(
         public readonly int $leistungId,
         public readonly string $leistungBezeichnung,

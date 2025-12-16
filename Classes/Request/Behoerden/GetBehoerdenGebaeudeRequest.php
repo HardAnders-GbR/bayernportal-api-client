@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Hardanders\BayernPortalApiClient\Request\Behoerden;
 
-class GetBehoerdeAnsprechpartnerRequest
+/**
+ * @doc https://www.baybw-services.bayern.de/restapi.htm#resources-behoerden-behoerde-id
+ */
+class GetBehoerdenGebaeudeRequest
 {
     public function __construct(
         public string $behoerdeId,
+        public string $gebaeudeId,
     ) {
     }
 }
