@@ -9,7 +9,7 @@ use Hardanders\BayernPortalApiClient\Request\Leistungen\LeistungRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Request\BaseEndpointTest;
 
-class GetLeistungByIdTest extends BaseEndpointTest
+class GetLeistungTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
     public function testGetLeistungen(LeistungRequest $request, bool $expectSuccess): void

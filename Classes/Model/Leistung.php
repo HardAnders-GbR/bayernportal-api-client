@@ -6,18 +6,20 @@ namespace Hardanders\BayernPortalApiClient\Model;
 
 readonly class Leistung
 {
-    /**
-     * @param array<string, mixed>|string $bezeichnung
-     * @param mixed[]                     $lebenslagen
-     * @param mixed[]                     $synonyme
-     */
-    public function __construct(
-        public int $id,
-        public array|string $bezeichnung,
-        public string $url = '',
-        public ?\DateTimeImmutable $letzteAenderung = null,
-        public array $lebenslagen = [],
-        public array $synonyme = [],
-    ) {
+    public int $id;
+    public \stdClass|string $bezeichnung;
+    public string $url;
+    public ?\DateTimeImmutable $letzteAenderung;
+    public \stdClass $lebenslagen;
+    public \stdClass $synonyme;
+
+    public function __construct(\stdClass $data)
+    {
+        $this->id = $data->id;
+        $this->bezeichnung = $data->bezeichnung ?? '';
+        $this->url = $data->url ?? '';
+        $this->letzteAenderung = property_exists($data, 'letzteAenderung') ? new \DateTimeImmutable($data->letzteAenderung) : null;
+        $this->lebenslagen = $data->lebenslagen ?? new \stdClass();
+        $this->synonyme = $data->synonyme ?? new \stdClass();
     }
 }

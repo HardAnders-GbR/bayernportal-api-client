@@ -6,14 +6,16 @@ namespace Hardanders\BayernPortalApiClient\Model;
 
 readonly class LeistungMitOnlineverfahren
 {
-    /**
-     * @param mixed[] $onlineverfahren todo specify type
-     */
-    public function __construct(
-        public int $leistungId,
-        public string $leistungBezeichnung,
-        public string $leistungUrl,
-        public array $onlineverfahren,
-    ) {
+    public int $leistungId;
+    public string $leistungBezeichnung;
+    public string $leistungUrl;
+    public \stdClass $onlineverfahren;
+
+    public function __construct(\stdClass $data)
+    {
+        $this->leistungId = $data->leistungId;
+        $this->leistungBezeichnung = $data->leistungBezeichnung;
+        $this->leistungUrl = $data->leistungUrl;
+        $this->onlineverfahren = $data->onlineverfahren;
     }
 }

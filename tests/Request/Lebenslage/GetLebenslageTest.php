@@ -9,7 +9,7 @@ use Hardanders\BayernPortalApiClient\Request\Lebenslagen\LebenslageRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Request\BaseEndpointTest;
 
-class GetLebenslageByIdTest extends BaseEndpointTest
+class GetLebenslageTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
     public function testGetLebenslageById(LebenslageRequest $request, bool $expectSuccess): void

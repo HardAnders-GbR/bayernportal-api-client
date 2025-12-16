@@ -31,16 +31,11 @@ use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistung
 use Hardanders\BayernPortalApiClient\Request\Leistungsbeschreibungen\GetLeistungsbeschreibungRequest;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class BayernportalApiClient
 {
     private HttpClientInterface $client;
-
-    private Serializer $serializer;
 
     public function __construct(
         public string $username,
@@ -55,10 +50,6 @@ class BayernportalApiClient
                 'headers' => ['accept' => 'application/json'],
             ]
         );
-
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $this->serializer = new Serializer($normalizers, $encoders);
     }
 
     /**
@@ -76,16 +67,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['dienststelle'] ?? [] as $dienststelleData) {
-            $return[] = $this->serializer->deserialize(json_encode($dienststelleData), Model\Dienststelle::class, 'json');
-        }
-
-        return $return;
+        return array_map(fn (\stdClass $data) => new Model\Dienststelle($data), $response->dienststelle);
     }
 
     /**
@@ -101,10 +86,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        return $response ? $this->serializer->deserialize(json_encode($response['dienststelle'][0]), Model\Dienststelle::class, 'json') : null;
+        return $response ? new Model\Dienststelle($response->dienststelle[0]) : null;
     }
 
     /**
@@ -122,16 +107,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistung'] ?? [] as $data) {
-            $return[] = $this->serializer->deserialize(json_encode($data), Leistung::class, 'json');
-        }
-
-        return $return;
+        return array_map(fn (\stdClass $data) => new Leistung($data), $response->leistung);
     }
 
     /**
@@ -147,16 +126,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistungMitFormularen'] ?? [] as $data) {
-            $return[] = $this->serializer->deserialize(json_encode($data), Model\LeistungMitFormularen::class, 'json');
-        }
-
-        return $return;
+        return array_map(fn (\stdClass $data) => new Model\LeistungMitFormularen($data), $response->leistungMitFormularen);
     }
 
     /**
@@ -172,16 +145,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistungMitOnlineverfahren'] ?? [] as $item) {
-            $return[] = $this->serializer->deserialize(json_encode($item), Model\LeistungMitOnlineverfahren::class, 'json');
-        }
-
-        return $return;
+        return array_map(fn (\stdClass $data) => new Model\LeistungMitOnlineverfahren($data), $response->leistungMitOnlineverfahren);
     }
 
     /**
@@ -197,17 +164,9 @@ class BayernportalApiClient
     {
         $endpoint = sprintf('dienststellen/%s/lebenslagen', $request->dienststellenschluessel);
 
-        $response = $this->request(
-            $endpoint,
-        );
+        $response = $this->request($endpoint);
 
-        $return = [];
-
-        foreach ($response['lebenslage'] ?? [] as $item) {
-            $return[] = $this->serializer->deserialize(json_encode($item), Model\Lebenslage::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Lebenslage($data), $response->lebenslage) : [];
     }
 
     /**
@@ -225,13 +184,7 @@ class BayernportalApiClient
 
         $response = $this->request($endpoint);
 
-        $return = [];
-
-        foreach ($response['ansprechpartner']['ap'] ?? [] as $ap) {
-            $return[] = $this->serializer->deserialize(json_encode($ap), Model\Ansprechpartner::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Ansprechpartner($data), $response->ansprechpartner->ap) : [];
     }
 
     /**
@@ -249,7 +202,7 @@ class BayernportalApiClient
 
         $response = $this->request($endpoint);
 
-        return $response['ap'] ? $this->serializer->deserialize(json_encode($response['ap'][0]), Model\Ansprechpartner::class, 'json') : null;
+        return $response->ap ? new Model\Ansprechpartner($response->ap[0]) : null;
     }
 
     /**
@@ -265,16 +218,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistungsbeschreibung'] ?? [] as $data) {
-            $return[] = $this->serializer->deserialize(json_encode($data), Model\Leistungsbeschreibung::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Leistungsbeschreibung($data), $response->leistungsbeschreibung) : [];
     }
 
     /**
@@ -296,16 +243,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistungsbeschreibung'] as $leistungsbeschreibungData) {
-            $return[] = $this->serializer->deserialize(json_encode($leistungsbeschreibungData), Model\Leistungsbeschreibung::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Leistungsbeschreibung($data), $response->leistungsbeschreibung) : [];
     }
 
     /**
@@ -319,10 +260,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        return $this->serializer->deserialize(json_encode($response['leistungsbeschreibung']), Model\Leistungsbeschreibung::class, 'json');
+        return $response ? new Model\Leistungsbeschreibung($response->leistungsbeschreibung) : null;
     }
 
     /**
@@ -340,16 +281,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams(),
+            $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['behoerde'] ?? [] as $behoerdeData) {
-            $return[] = $this->serializer->deserialize(json_encode($behoerdeData), Model\Behoerde::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Behoerde($data), $response->behoerde) : [];
     }
 
     /**
@@ -364,11 +299,9 @@ class BayernportalApiClient
     {
         $endpoint = sprintf('behoerden/%s', $request->behoerdeId);
 
-        $response = $this->request(
-            $endpoint,
-        );
+        $response = $this->request($endpoint);
 
-        return $response ? $this->serializer->deserialize(json_encode($response['behoerde']), Model\Behoerde::class, 'json') : null;
+        return $response ? new Model\Behoerde($response->behoerde) : null;
     }
 
     /**
@@ -385,7 +318,7 @@ class BayernportalApiClient
 
         $response = $this->request($endpoint);
 
-        return $response ? $this->serializer->deserialize(json_encode($response['behoerdenGebaeude']), Gebaeude::class, 'json') : null;
+        return $response ? new Gebaeude($response->behoerdenGebaeude) : null;
     }
 
     /**
@@ -407,13 +340,7 @@ class BayernportalApiClient
             $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistung'] ?? [] as $leistung) {
-            $return[] = $this->serializer->deserialize(json_encode($leistung), Leistung::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Leistung($data), $response->leistung) : [];
     }
 
     /**
@@ -431,13 +358,7 @@ class BayernportalApiClient
 
         $response = $this->request($endpoint);
 
-        $return = [];
-
-        foreach ($response['leistung'] ?? [] as $leistung) {
-            $return[] = $this->serializer->deserialize(json_encode($leistung), Leistung::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Leistung($data), $response->leistung) : [];
     }
 
     /**
@@ -455,7 +376,7 @@ class BayernportalApiClient
 
         $response = $this->request($endpoint);
 
-        return $response ? $this->serializer->deserialize(json_encode($response['ansprechpartner']), Model\Ansprechpartner::class, 'json') : null;
+        return $response ? new Model\Ansprechpartner($response['ansprechpartner']) : null;
     }
 
     /**
@@ -476,13 +397,7 @@ class BayernportalApiClient
             $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['ap'] as $ap) {
-            $return[] = $this->serializer->deserialize(json_encode($ap), Model\Ansprechpartner::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Ansprechpartner($data), $response->ap) : [];
     }
 
     /**
@@ -504,13 +419,7 @@ class BayernportalApiClient
             $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistung'] as $leistung) {
-            $return[] = $this->serializer->deserialize(json_encode($leistung), Leistung::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Leistung($data), $response->leistung) : [];
     }
 
     /**
@@ -531,13 +440,7 @@ class BayernportalApiClient
             $request->getQueryParams()
         );
 
-        $return = [];
-
-        foreach ($response['leistung'] as $leistung) {
-            $return[] = $this->serializer->deserialize(json_encode($leistung), Leistung::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Leistung($data), $response->leistung) : [];
     }
 
     /**
@@ -556,7 +459,7 @@ class BayernportalApiClient
             $request->getQueryParams()
         );
 
-        return $response ? $this->serializer->deserialize(json_encode($response), Leistung::class, 'json') : null;
+        return $response ? new Leistung($response) : null;
     }
 
     /**
@@ -574,16 +477,10 @@ class BayernportalApiClient
 
         $response = $this->request(
             $endpoint,
-            $request->getQueryParams()
+            $request->getQueryParams(),
         );
 
-        $return = [];
-
-        foreach ($response['lebenslage'] as $lebenslage) {
-            $return[] = $this->serializer->deserialize(json_encode($lebenslage), Model\Lebenslage::class, 'json');
-        }
-
-        return $return;
+        return $response ? array_map(fn (\stdClass $data) => new Model\Lebenslage($data), $response->lebenslage) : [];
     }
 
     /**
@@ -597,15 +494,9 @@ class BayernportalApiClient
     {
         $endpoint = sprintf('lebenslagen/%s', $request->lebenslageId);
 
-        $response = $this->request(
-            $endpoint,
-        );
+        $response = $this->request($endpoint);
 
-        if (!$response) {
-            return null;
-        }
-
-        return $this->serializer->deserialize(json_encode($response), Model\Lebenslage::class, 'json');
+        return $response ? new Model\Lebenslage($response) : null;
     }
 
     /**
@@ -614,7 +505,7 @@ class BayernportalApiClient
     private function request(
         string $url,
         array $queryParams = [],
-    ): ?array {
+    ): array|\stdClass|null {
         if ($queryParams) {
             $url .= sprintf('?%s', http_build_query($queryParams));
         }
@@ -623,7 +514,7 @@ class BayernportalApiClient
             $response = $this->client->request('GET', $url);
             $content = $response->getContent();
 
-            return json_decode($content, true);
+            return json_decode($content, false);
         } catch (ClientException $e) {
             return null;
         }

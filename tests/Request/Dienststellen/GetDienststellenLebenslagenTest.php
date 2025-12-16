@@ -12,7 +12,7 @@ use Tests\Request\BaseEndpointTest;
 class GetDienststellenLebenslagenTest extends BaseEndpointTest
 {
     #[DataProvider('dataProvider')]
-    public function testGetDienststellenFormulare(DienststellenLebenslagenRequest $request, bool $expectSuccess): void
+    public function testGetDienststellenLebenslagen(DienststellenLebenslagenRequest $request, bool $expectSuccess): void
     {
         $response = $this->apiClient->getDienststellenLebenslagen($request);
 
